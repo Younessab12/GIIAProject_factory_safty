@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300&display=swap"
+      rel="stylesheet"
+    />
+    <title>SD3W | Monitoring System</title>
+  </head>
+
+  <body>
+    <div class="main">
+      <h1 id="myele">Monitoring</h1>
+
+      <div class="cards">
+        <div class="card-it">
+          <h2 class="card-title">HEAD ORIENTATION</h2>
+          <div class="card-img">
+            <img
+              src="assets/D.png"
+              alt="head_position"
+              width="150"
+              height="150"
+              id="orientation"
+            />
+          </div>
+          <p id="orientation_txt" class="text-size">position text</p>
+        </div>
+        <div class="card-it">
+          <h3 class="card-title">HEAD LEVEL</h3>
+          <div class="card-img">
+            <img
+              src="assets/D.png"
+              alt="head_position"
+              width="150"
+              height="150"
+              id="level"
+            />
+          </div>
+          <p id="level_txt" class="text-size">position text</p>
+        </div>
+        <div class="card-it">
+          <h3 class="card-title">EYES STATE</h3>
+          <div class="card-img">
+            <p class="huge" id="test_id">Open</p>
+          </div>
+        </div>
+
+        <div class="card-it extra-space">
+          <h3 class="card-title">HEAD INCLINATION °</h3>
+          <div class="card-img">
+            <p class="huge" id="inclination">85°</p>
+          </div>
+          <div class="text_container">
+            <p id="inclination_txt" class="text-size">position text</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="microphone">
+        <div class="microphone-container">
+          <i class="fa fa-microphone" style="font-size: 28px"></i>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="/eel.js"></script>
+  <script src="index.js"></script>
+</html>
