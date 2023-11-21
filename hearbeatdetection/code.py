@@ -79,7 +79,6 @@ def gaussian_video(video_tensor,levels=3):
         frame=video_tensor[i]
         pyr=build_gaussian_pyramid(frame,level=levels)
         gaussian_frame=pyr[-1]
-        print(i)
         if i==0:
             vid_data=np.zeros((video_tensor.shape[0],gaussian_frame.shape[0],gaussian_frame.shape[1],3))
         vid_data[i]=gaussian_frame
@@ -108,6 +107,9 @@ def save_video(video_tensor):
     for i in range(0,video_tensor.shape[0]):
         writer.write(cv2.convertScaleAbs(video_tensor[i]))
     writer.release()
+    for i in range(0,video_tensor.shape[0]):
+        cv2.imshow(cv2.convertScaleAbs(video_tensor[i]))
+        cv2.waitKey(1)
 
 #magnify color
 def magnify_color(video_name,low,high,levels=3,amplification=20):
@@ -165,5 +167,5 @@ def magnify_motion(video_name,low,high,levels=3,amplification=20):
     save_video(final)
 
 if __name__=="__main__":
-    magnify_color("face1.mp4",0.4,3)
+    magnify_color("baby.mp4",0.4,3)
     # magnify_motion("face1.mp4",0.4,3)
