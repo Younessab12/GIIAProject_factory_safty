@@ -107,13 +107,11 @@ def save_video(video_tensor):
     for i in range(0,video_tensor.shape[0]):
         writer.write(cv2.convertScaleAbs(video_tensor[i]))
     writer.release()
-    for i in range(0,video_tensor.shape[0]):
-        cv2.imshow(cv2.convertScaleAbs(video_tensor[i]))
-        cv2.waitKey(1)
 
 #magnify color
-def magnify_color(video_name,low,high,levels=3,amplification=20):
+def magnify_color(video_name,low,high,levels=3,amplification=50):
     t,f=load_video(video_name)
+    print(f)
     gau_video=gaussian_video(t,levels=levels)
     filtered_tensor=temporal_ideal_filter(gau_video,low,high,f)
     amplified_video=amplify_video(filtered_tensor,amplification=amplification)
