@@ -10,7 +10,7 @@ from scipy.signal import find_peaks
 # from mediapipe.framework.formats import landmark_pb2
 # import numpy as np
 # import matplotlib.pyplot as plt
-
+print("hdjh")
 
 
 # def draw_landmarks_on_image(rgb_image, detection_result):
