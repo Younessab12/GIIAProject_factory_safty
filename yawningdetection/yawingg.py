@@ -10,7 +10,6 @@ from scipy.signal import find_peaks
 # from mediapipe.framework.formats import landmark_pb2
 # import numpy as np
 # import matplotlib.pyplot as plt
-print("hdjh")
 
 
 # def draw_landmarks_on_image(rgb_image, detection_result):
@@ -92,15 +91,18 @@ while cap.isOpened():
     if results.multi_face_landmarks:
         for face_landmarks in results.multi_face_landmarks:
             # Indices des points de repère des lèvres
-            left_lip_index = 61  # Modifier selon votre modèle spécifique
-            right_lip_index = 91  # Modifier selon votre modèle spécifique
-
+            up_lip_index = 13   # Modifier selon votre modèle spécifique
+            down_lip_index = 14  # Modifier selon votre modèle spécifique
+            up_face_index = 10
+            down_face_index = 152
             # Coordonnées des points de repère
-            left_lip = face_landmarks.landmark[left_lip_index]
-            right_lip = face_landmarks.landmark[right_lip_index]
+            up_lip = face_landmarks.landmark[up_lip_index]
+            down_lip = face_landmarks.landmark[down_lip_index]
+            up_face=face_landmarks.landmark[up_face_index]
+            down_face=face_landmarks.landmark[down_face_index]
 
             # Calcul de la distance entre les deux lèvres
-            lip_distance = np.sqrt((right_lip.x - left_lip.x)**2 + (right_lip.y - left_lip.y)**2)
+            lip_distance = (np.sqrt((down_lip.x - up_lip.x)**2 + (down_lip.y - up_lip.y)**2+ (down_lip.z - up_lip.z)**2))/(np.sqrt((down_face.x - up_face.x)**2 + (down_face.y - up_face.y)**2+ (down_face.z - up_face.z)**2))
 
             # Ajouter les données à la liste
             current_time = time.time() - start_time
@@ -143,7 +145,7 @@ while cap.isOpened():
                 bail_duration = time.time() - bail_start_time
                 if bail_duration > bail_duration_threshold:
                     # Afficher le message sur la caméra
-                    cv2.putText(frame, "Bâillement détecté!", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
+                    cv2.putText(frame, "yawning detection", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
 
         else:
             # La distance est en dessous du seuil, réinitialiser le compteur du bâillement
