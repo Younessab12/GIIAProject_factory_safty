@@ -100,7 +100,7 @@ while cap.isOpened():
             right_lip = face_landmarks.landmark[right_lip_index]
 
             # Calcul de la distance entre les deux lèvres
-            lip_distance = np.sqrt((right_lip.x - left_lip.x)**2 + (right_lip.y - left_lip.y)**2)
+            lip_distance = np.sqrt((right_lip.x - left_lip.x)**2 + (right_lip.y - left_lip.y)**2 + (right_lip.z - left_lip.z)**2)
 
             # Ajouter les données à la liste
             current_time = time.time() - start_time
