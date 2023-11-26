@@ -9,10 +9,10 @@ hearbeatdetection/face1.mp4
 
 *.avi
 
-
-
 phonedetection/images/
 
-smokingDetection/data/*
+smokingDetection/data/*.jpg
+smokingDetection/data/*.jpeg
+smokingDetection/data/*.png
 
 models/*
