@@ -1,0 +1,26 @@
+<annotation>
+	<folder>me_to_label</folder>
+	<filename>img_30.jpeg</filename>
+	<path>C:\Users\Amine\Desktop\AI\GIIAProject_factory_safty\smokingDetection\data\me_to_label\img_30.jpeg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>634</width>
+		<height>461</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>smoking</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>326</xmin>
+			<ymin>206</ymin>
+			<xmax>341</xmax>
+			<ymax>258</ymax>
+		</bndbox>
+	</object>
+</annotation>

@@ -16,3 +16,5 @@ smokingDetection/data/*.jpeg
 smokingDetection/data/*.png
 
 models/*
+
+smokingDetection/data/me_to_label/
