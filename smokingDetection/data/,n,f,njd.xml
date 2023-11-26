@@ -1,0 +1,26 @@
+<annotation>
+	<folder>imges</folder>
+	<filename>,n,f,njd.jpg</filename>
+	<path>C:\Users\Dell Latitude 5420\Desktop\imges\,n,f,njd.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>1620</width>
+		<height>1080</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>smoking</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>614</xmin>
+			<ymin>384</ymin>
+			<xmax>1301</xmax>
+			<ymax>550</ymax>
+		</bndbox>
+	</object>
+</annotation>
