@@ -1,0 +1,26 @@
+<annotation>
+	<folder>data</folder>
+	<filename>img_186.jpg</filename>
+	<path>C:\Users\Dell Latitude 5420\Desktop\IA\GIIAProject_factory_safty\smokingDetection\data\img_186.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>500</width>
+		<height>700</height>
+		<depth>1</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>smoking</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>352</xmin>
+			<ymin>208</ymin>
+			<xmax>442</xmax>
+			<ymax>223</ymax>
+		</bndbox>
+	</object>
+</annotation>
