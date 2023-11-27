@@ -1,0 +1,26 @@
+<annotation>
+	<folder>Me 112-177</folder>
+	<filename>img_158.jpg</filename>
+	<path>C:\Users\yassine\Desktop\IA Officiel\GIIAProject_factory_safty\smokingDetection\data\Me 112-177\img_158.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>2048</width>
+		<height>1365</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>smoking</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>1107</xmin>
+			<ymin>689</ymin>
+			<xmax>1351</xmax>
+			<ymax>745</ymax>
+		</bndbox>
+	</object>
+</annotation>
