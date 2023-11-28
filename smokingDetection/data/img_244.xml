@@ -1,7 +1,7 @@
 <annotation>
-	<folder>data</folder>
+	<folder>lable_img</folder>
 	<filename>img_244.jpeg</filename>
-	<path>C:\Users\Dell Latitude 5420\Desktop\IA\GIIAProject_factory_safty\smokingDetection\data\img_244.jpeg</path>
+	<path>C:\Users\Dell Latitude 5420\Desktop\IA\GIIAProject_factory_safty\lable_img\img_244.jpeg</path>
 	<source>
 		<database>Unknown</database>
 	</source>
@@ -17,10 +17,10 @@
 		<truncated>0</truncated>
 		<difficult>0</difficult>
 		<bndbox>
-			<xmin>243</xmin>
+			<xmin>245</xmin>
 			<ymin>119</ymin>
-			<xmax>283</xmax>
-			<ymax>136</ymax>
+			<xmax>282</xmax>
+			<ymax>139</ymax>
 		</bndbox>
 	</object>
 </annotation>

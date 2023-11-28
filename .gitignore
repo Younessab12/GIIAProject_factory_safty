@@ -18,3 +18,9 @@ smokingDetection/data/*.png
 models/*
 
 smokingDetection/data/me_to_label/
+
+smokingDetection/notworking/
+
+smokingDetection/detection/custom_model_lite/
+
+smokingDetection/detection/custom_model_lite.zip
