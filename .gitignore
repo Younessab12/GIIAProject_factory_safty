@@ -18,3 +18,7 @@ smokingDetection/data/*.png
 models/*
 
 smokingDetection/data/me_to_label/
+
+smokingDetection/batch_2_smoke/
+
+smokingDetection/batch_2_smoke.zip
