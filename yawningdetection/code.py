@@ -50,6 +50,7 @@ def get_eyes_lips_relative_distance(face_landmarks):
             "left_eye": -1,
             "right_eye": -1
         }
+    
 
     #relevant points for lips, left eye, and right eye
     upper_lip = face_landmarks.landmark[13]
