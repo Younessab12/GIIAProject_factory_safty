@@ -1,0 +1,26 @@
+<annotation>
+	<folder>batch_2_smoke</folder>
+	<filename>img_batch2_41.jpg</filename>
+	<path>C:\Users\Amine\Desktop\AI\GIIAProject_factory_safty\smokingDetection\batch_2_smoke\img_batch2_41.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>850</width>
+		<height>567</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>smoking</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>477</xmin>
+			<ymin>291</ymin>
+			<xmax>694</xmax>
+			<ymax>428</ymax>
+		</bndbox>
+	</object>
+</annotation>
