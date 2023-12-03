@@ -1,20 +1,9 @@
 import cv2
-import mediapipe as mp
-import time
 import numpy as np
-import matplotlib.pyplot as plt
-from scipy.signal import find_peaks
-
-"""
-  calibration takes in consideration:
-    1- skin color
-    2- yawning
-    3- talking
-    4- general ( static ) 
-"""
-
 import time
-import cv2
+import math
+import json
+import os
 
 """
   To calibrate we will record the following:
@@ -25,8 +14,42 @@ import cv2
       - ...
 """
 
+class NumpyEncoder(json.JSONEncoder):
+    """ Special json encoder for numpy types """
+    def default(self, obj):
+        if isinstance(obj, np.integer):
+            return int(obj)
+        elif isinstance(obj, np.floating):
+            return float(obj)
+        elif isinstance(obj, np.ndarray):
+            return obj.tolist()
+        return json.JSONEncoder.default(self, obj)
+    
+class FaceRecord:
+  def __init__(self, title):
+    self.title = title
+    self.lips_record = []
+    self.left_eye_record = []
+    self.right_eye_record = []
+
+  def add_to_record(self, result):
+    self.lips_record.append(result['lips'])
+    self.left_eye_record.append(result['left_eye'])
+    self.right_eye_record.append(result['right_eye'])
+
+  def get_record(self):
+    return {
+      "lips": self.lips_record,
+      "left_eye": self.left_eye_record,
+      "right_eye": self.right_eye_record
+    }
+
+SKIN_DETECTION, STANDARD_FACE, YAWNING, TALKING, ENDED = range(5)
+
 class Calib:
-  def __init__(self):
+  def __init__(self, person_name="default"):
+    self.owner = person_name
+    self.env_init()
     self.start_time= time.time()
     self.duration = 0
     self.state = 0
@@ -34,20 +57,66 @@ class Calib:
     part_skin = ['forehead', 'left_cheek', 'right_cheek', 'right_hand', 'left_hand']
     self.record = { part: [] for part in part_skin }
     self.color = { part: None for part in part_skin }
-    
 
+    self.face_record = {
+      STANDARD_FACE: FaceRecord(STANDARD_FACE),
+      YAWNING: FaceRecord(YAWNING),
+      TALKING: FaceRecord(TALKING)
+    }
+
+    self.messages = [
+      "show face and hands for skin detection",
+      "show face in natural position",
+      "show face in yawning position",
+      "read the following text: 'The quick brown fox jumps over the lazy dog'",
+      "ended"
+    ]
+    
+    self.number_frame_required = {
+      SKIN_DETECTION: 50,
+      STANDARD_FACE: 100,
+      YAWNING: 100,
+      TALKING: 250,
+      ENDED: 0
+    }
+  
   def process(self, frame, holistic_res):
     self.duration = time.time()- self.start_time
-    
+
     self.display_image_with_text(frame, f'dur : {self.duration}', "calib")
+    self.display_image_with_text(frame, self.messages[self.state], "calib", i=2)
 
     face_landmarks = holistic_res.face_landmarks
     pose_landmarks = holistic_res.pose_landmarks
 
-    if self.state == 0:
-      skin = self.skin_color_detection(frame, face_landmarks, pose_landmarks)
+    calibrations = [
+      self.skin_color_detection,
+      self.calibrate_general,
+      self.calibrate_yawning,
+      self.calibrate_talking,
+    ]
 
-    return self.get_state()
+    if self.state < len(calibrations):
+      state_over = calibrations[self.state](frame, face_landmarks, pose_landmarks)
+      if state_over:
+        print(f"state {self.state} over")
+        self.state += 1
+        time.sleep(1)
+        print(f"state {self.state} started")
+        print(self.messages[self.state])
+
+    return self.get_state() == len(calibrations)
+
+  def get_results(self):
+    return {
+      'person': self.owner,
+      'record_time' : self.start_time,
+      "duration": self.duration,
+      SKIN_DETECTION: self.color,
+      YAWNING: self.face_record[YAWNING].get_record(),
+      TALKING: self.face_record[TALKING].get_record(),
+      STANDARD_FACE: self.face_record[STANDARD_FACE].get_record()
+    }
 
   def skin_color_detection(self, frame, face_landmarks, pose_landmarks):
     """
@@ -62,12 +131,13 @@ class Calib:
         self.record[part].append(part_color)
 
     for part, colors in self.record.items():
-      if len(colors) > 50:
+      if len(colors) > self.number_frame_required[SKIN_DETECTION]:
         self.color[part] = np.average(colors, axis=0)
 
     print(self.color)
-    
 
+    return not any([color is None for color in self.color.values()])
+    
   def get_skin_color_from_frame(self, frame, face_landmarks, pose_landmarks):
     """
       Get frame and face_landmarks
@@ -94,14 +164,20 @@ class Calib:
 
     return record
 
-  def calibrate_yawning(self):
-    pass
+  def calibrate_yawning(self, frame, face_landmarks, pose_landmarks):
+    return self.calibrate_face_action(face_landmarks, YAWNING)
 
-  def calibrate_talking(self):
-    pass
+  def calibrate_talking(self, frame, face_landmarks, pose_landmarks):
+    return self.calibrate_face_action(face_landmarks, TALKING)
 
-  def calibrate_general(self):
-    pass
+  def calibrate_general(self, frame, face_landmarks, pose_landmarks):
+    self.save_image_recogniton(frame)
+    return self.calibrate_face_action(face_landmarks, STANDARD_FACE)
+
+  def calibrate_face_action(self, face_landmarks, action):
+    if not face_landmarks: return False
+    self.face_record[action].add_to_record(self.get_eyes_lips_relative_distance(face_landmarks))
+    return len(self.face_record[action].lips_record) > self.number_frame_required[action]
 
   def crop_forehead(self, frame, face_landmarks):
     """
@@ -169,14 +245,66 @@ class Calib:
   def get_state(self):
     pass
 
-  def display_image_with_text(self, img, text, title):
+  def display_image_with_text(self, img, text, title, i=1):
     cv2.putText(
       img = img,
       text = text,
-      org = (200, 200),
+      org = (10, 10+i*20),
       fontFace = cv2.FONT_HERSHEY_DUPLEX,
       fontScale = 1.0,
       color = (125, 246, 55),
       thickness = 1
     )
     cv2.imshow(title, img)
+
+  def calculate_distance(self, point1, point2):
+    return math.sqrt((point1.x - point2.x)**2 + (point1.y - point2.y)**2+(point1.z - point2.z)**2)
+
+  def get_eyes_lips_relative_distance(self, face_landmarks):
+    if not face_landmarks:
+        return {
+            "lips": -1,
+            "left_eye": -1,
+            "right_eye": -1
+        }
+
+    #relevant points for lips, left eye, and right eye
+    upper_lip = face_landmarks.landmark[13]
+    bottom_lip = face_landmarks.landmark[14]
+    upper_left_eye_point = face_landmarks.landmark[386]
+    bottom_left_eye_point = face_landmarks.landmark[374]
+    upper_right_eye_points = face_landmarks.landmark[159]
+    bottom_right_eye_points = face_landmarks.landmark[145]
+    upper_face = face_landmarks.landmark[10]
+    bottom_face = face_landmarks.landmark[152]
+
+    #Relative distances
+    lips_distance = self.calculate_distance(upper_lip, bottom_lip) / self.calculate_distance(upper_face, bottom_face)
+    left_eye_distance = self.calculate_distance(upper_left_eye_point, bottom_left_eye_point) / self.calculate_distance(upper_face, bottom_face)
+    right_eye_distance = self.calculate_distance(upper_right_eye_points, bottom_right_eye_points) / self.calculate_distance(upper_face, bottom_face)
+
+    return {
+        "lips": lips_distance,
+        "left_eye": left_eye_distance,
+        "right_eye": right_eye_distance
+    }
+
+  def save_image_recogniton(self, frame):
+    cv2.imwrite(f'{self.face_recognition_folder}/{time.time()}.jpg', frame)
+
+  def env_init(self):
+    folder = 'calib_records'
+    if not os.path.exists(folder):
+      os.makedirs(folder)
+
+    face_recognition_folder = f'{folder}/data/{self.owner}'
+    if not os.path.exists(face_recognition_folder):
+      os.makedirs(face_recognition_folder)
+
+    self.face_recognition_folder = face_recognition_folder
+    self.record_file = f'{folder}/calibration_{self.owner}'
+
+  def export_json(self):
+    data = self.get_results()
+    with open(f'{self.record_file}.json', 'w') as outfile:
+      json.dump(data, outfile, cls=NumpyEncoder)
