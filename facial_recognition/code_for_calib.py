@@ -3,6 +3,7 @@ import os
 from imutils import paths
 import face_recognition
 import pickle
+import numpy as np
 
 
 def train_model(path_to_imgs_folder):
