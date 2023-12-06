@@ -7,6 +7,7 @@ from ultralytics import YOLO
 
 
 class Detector:
+
     def __init__(self,model_path) -> None:
         self.model = YOLO(model_path)
 
@@ -23,8 +24,8 @@ class Detector:
         res = self.model(frame,stream=True,show=False)
         for r in res:
             boxes = r.boxes
-            if len(boxes) > 0:
-                return [boxes.xyxy[0],boxes.conf,"smoking"]
+            if len(boxes) > 0 and float(boxes.conf[0])>=0.5:
+                return [boxes.xyxy[0],boxes.conf[0],"smoking"]
         return None
     
     def calculate_distance(self,index_cord,mouth_cord,face_down_cord,face_up_cord):
@@ -38,6 +39,7 @@ class Detector:
         """
         distance = np.sqrt((index_cord.x - mouth_cord.x)**2 + (index_cord.y - mouth_cord.y)**2+ (index_cord.z - mouth_cord.z)**2)/(np.sqrt((face_down_cord.x - face_up_cord.x)**2 + (face_down_cord.y - face_up_cord.y)**2+ (face_down_cord.z - face_up_cord.z)**2))
         return distance
+    
     def draw_bounding_box(self,frame,boxes,label,confidences):
         """
             this fct is used to draw the bounding box of the detected smoking action
@@ -49,6 +51,6 @@ class Detector:
         """
         for box in boxes:
             cv2.rectangle(frame, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (0,255,0), 2)
-            cv2.putText(frame,label+' '+str(round(confidences)),(int(box[0]), int(box[1])),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
+            cv2.putText(frame,label+' '+str(round(confidences,2)),(int(box[0]), int(box[1])),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
         return frame
     
