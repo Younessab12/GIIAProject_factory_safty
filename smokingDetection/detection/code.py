@@ -22,7 +22,7 @@ class Detector:
             for r in res:
                 boxes = r.boxes
                 if len(boxes) > 0:
-                    print("smoking detected",time.time()-curr_time )
+                    print("phone detected",time.time()-curr_time )
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
         cap.release()
