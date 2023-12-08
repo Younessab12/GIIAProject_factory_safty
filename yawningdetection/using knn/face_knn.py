@@ -2,7 +2,7 @@ import json
 import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 
-def Face_Assessment():
+class Face_Assessment:
     STD=0
     YAWNING=1
     TALKING=2
@@ -45,5 +45,17 @@ def Face_Assessment():
         self.detector = neigh.fit(X, y)
 
     def assess(self, lips, left_eye, right_eye):
-        arr = np.array([lips, left_eye, right_eye])
+        arr = np.array([[lips, left_eye, right_eye]])
         return self.detector.predict(arr)
+    
+    def get_results(self,lips, left_eye, right_eye):
+        mp = {
+            0: "STD",
+            1: "YAWNING",
+            2: "TALKING"
+        }
+        results = []
+        assets = self.assess(lips, left_eye, right_eye)
+        for i in assets:
+            results.append(mp[int(i)])
+        return results
