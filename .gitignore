@@ -50,3 +50,5 @@ facial_recognition/dataset/ABDO/
 facial_recognition/dataset/youness aabibi/
 
 profiling&calib/calib_records/
+
+smokingDetection/detection/bestphone.pt
