@@ -56,3 +56,10 @@ smokingDetection/detection/bestphone.pt
 profiling_calib/calib_records/
 
 phonedetection/last (1).pt
+
+
+## .git_ignore for t3-app in admin folder
+admin/node_modules/
+admin/build/
+admin/.env
+admin/package-lock.json
