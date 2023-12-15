@@ -10,9 +10,9 @@ class API:
   def reportActivity(self, activity):
     """
       apiKey: z.string(),
-      operatorName: z.string(),
-      gravity: z.number(),
-      activityName: z.string(),
+    x  operatorName: z.string(),
+    x  gravity: z.number(),
+    x  activityName: z.string(),
       timestamp: z.string(),
     """
     timestamp = int(time.time())
