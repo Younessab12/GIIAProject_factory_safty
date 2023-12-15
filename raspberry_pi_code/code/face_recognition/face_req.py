@@ -8,6 +8,7 @@ class Face_detector:
         self.encodingsP = '../assets/encodings.pickle'
         self.data = pickle.loads(open(self.encodingsP, "rb").read())
     def detectface(self,frame):
+        detection_res={}
         boxes = face_recognition.face_locations(frame)
         currentname = "unknown"
         encodings = face_recognition.face_encodings(frame, boxes)
@@ -28,4 +29,6 @@ class Face_detector:
                     print(currentname)
 
             names.append(name)
-            return names,boxes
+        for (name,boxe) in zip(names,boxes):
+            detection_res[name]=boxe
+        return detection_res

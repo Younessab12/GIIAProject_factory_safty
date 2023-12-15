@@ -10,23 +10,6 @@ class SmockingDetector:
 
     def __init__(self) -> None:
         self.model = YOLO('../assets/bestnano.pt')
-
-    def detect(self,frame:np.array):
-        """
-            this fct is used to detect the smoking action in a frame
-            input: frame: np.array
-                frame to be processed(when the distance between the mouth and the hand is small enough)
-            output: list or None(if no smoking action is detected)
-                list : bosxes.xyxy is the bounding boxe of the cigarette in the frame
-                       boxes.conf is the confidence of the model in the detection
-                      "smoking" is the label of the detected action
-        """
-        res = self.model(frame,stream=True,show=False)
-        for r in res:
-            boxes = r.boxes
-            if len(boxes) > 0 and float(boxes.conf[0])>=0.5:
-                return [boxes.xyxy[0],boxes.conf[0],"smoking"]
-        return None
     
     def calculate_distance(self,index_cord,mouth_cord,face_down_cord,face_up_cord):
         """
@@ -39,6 +22,30 @@ class SmockingDetector:
         """
         distance = np.sqrt((index_cord.x - mouth_cord.x)**2 + (index_cord.y - mouth_cord.y)**2+ (index_cord.z - mouth_cord.z)**2)/(np.sqrt((face_down_cord.x - face_up_cord.x)**2 + (face_down_cord.y - face_up_cord.y)**2+ (face_down_cord.z - face_up_cord.z)**2))
         return distance
+
+    def detect(self,frame:np.array,right_hand_landmarks,left_hand_landmarks,face_landmarks):
+        """
+            this fct is used to detect the smoking action in a frame
+            input: frame: np.array
+                frame to be processed(when the distance between the mouth and the hand is small enough)
+            output: list or None(if no smoking action is detected)
+                list : bosxes.xyxy is the bounding boxe of the cigarette in the frame
+                       boxes.conf is the confidence of the model in the detection
+                      "smoking" is the label of the detected action
+        """
+        if right_hand_landmarks and face_landmarks :
+            left_dist=self.calculate_distance(right_hand_landmarks.landmark[13],face_landmarks.landmark[13],face_landmarks.landmark[152],face_landmarks.landmark[10])
+        if left_hand_landmarks and face_landmarks :
+            right_dist=self.calculate_distance(left_hand_landmarks.landmark[13],face_landmarks.landmark[13],face_landmarks.landmark[152],face_landmarks.landmark[10])
+        if left_dist<0.8 or right_dist:
+            res = self.model(frame,stream=True,show=False)
+            for r in res:
+                boxes = r.boxes
+                if len(boxes) > 0 and float(boxes.conf[0])>=0.5:
+                    return [boxes.xyxy[0],boxes.conf[0],"smoking"]
+        return None
+    
+    
     
     def draw_bounding_box(self,frame,detection_result):
         """
