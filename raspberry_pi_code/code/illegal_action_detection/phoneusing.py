@@ -6,7 +6,7 @@ import time
 
 class PhoneDetector:
     def __init__(self,cam_id=0):
-        self.model = YOLO('../assets/bestnanophone.pt')
+        self.model = YOLO('../assets/models/bestnanophone.pt')
         self.cam_id = cam_id
     
 

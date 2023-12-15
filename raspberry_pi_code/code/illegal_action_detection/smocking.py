@@ -9,7 +9,7 @@ from ultralytics import YOLO
 class SmockingDetector:
 
     def __init__(self) -> None:
-        self.model = YOLO('../assets/bestnano.pt')
+        self.model = YOLO('../assets/models/bestnano.pt')
 
     def detect(self,frame:np.array):
         """
