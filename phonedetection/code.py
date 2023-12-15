@@ -31,7 +31,7 @@ class PhoneDetector:
         cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    model_path = "C:\\Users\\yassine\\Desktop\\IA project mediapipe\\phone detecte\\last (1).pt"  
-    detector = Detector(model_path)
+    model_path = "./bestnanophone.pt"  
+    detector = PhoneDetector(model_path)
     detector.detect()
 
