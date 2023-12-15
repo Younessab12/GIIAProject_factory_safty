@@ -14,6 +14,40 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
+model Raspberry {
+    id String @id
+    name       String
+    apiKey     String @unique
+    activities Activity[]
+
+    @@index([apiKey])
+}
+
+model Operator {
+    id   Int        @id @default(autoincrement())
+    operatorName String  @unique
+    firstName    String?
+    lastName     String?
+    image        String?
+    phone        String?
+    email        String?
+    activities   Activity[]
+}
+
+model Activity {
+    activityId     Int      @id @default(autoincrement())
+    activityName   String
+    description    String?
+    image          String?
+    timestamp      DateTime
+    createdAt      DateTime @default(now())
+    gravity        Int
+    operator       Operator @relation(fields: [operatorId], references: [id])
+    operatorId     Int
+    raspberry      Raspberry @relation(fields: [raspberryName], references: [id])
+    raspberryName    String
+}
+
 model Post {
     id        Int      @id @default(autoincrement())
     name      String
