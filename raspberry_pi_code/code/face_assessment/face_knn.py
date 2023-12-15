@@ -48,7 +48,7 @@ class Face_Assessment:
         arr = np.array([[lips, left_eye, right_eye]])
         return self.detector.predict(arr)
     
-    def get_results(self,lips, left_eye, right_eye):
+    def get_results(self, lips, left_eye, right_eye):
         mp = {
             0: "STD",
             1: "YAWNING",
