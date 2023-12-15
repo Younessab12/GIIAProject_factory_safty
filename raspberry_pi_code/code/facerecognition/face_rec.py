@@ -28,6 +28,7 @@ class Face_detector:
                 name = max(counts, key=counts.get)
                 if currentname != name:
                     currentname = name
+                    print(currentname)
 
             names.append(name)
             return names, boxes
