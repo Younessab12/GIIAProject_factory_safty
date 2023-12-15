@@ -25,9 +25,10 @@ class FaceAssessment:
     print(person_list)
 
   def detect(self, frame, res, operatorName):
+    if operatorName not in self.models:
+      return []
     data = self.get_eyes_lips_relative_distance(res.face_landmarks)
-
-    return self.models[operatorName].get_results(operatorName, data["lips"], data["left_eye"], data["right_eye"])
+    return self.models[operatorName].get_results(data["lips"], data["left_eye"], data["right_eye"])
 
   def assess_face(self, person, lips, left_eye, right_eye):
     return self.models[person].get_results(lips, left_eye, right_eye)
