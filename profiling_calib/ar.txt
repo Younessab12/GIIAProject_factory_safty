@@ -1,0 +1,81 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = pd.read_csv('data.csv')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# data [class distance1 distance2]\n",
+    "\n",
+    "bad = []\n",
+    "for row in data:\n",
+    "    if row['class'] == \"bad_handling\":\n",
+    "        bad.append([row['distance1'], row['distance2']])\n",
+    "\n",
+    "good = []\n",
+    "for row in data:\n",
+    "    if row['class'] == \"good_handling\":\n",
+    "        good.append([row['distance1'], row['distance2']])\n",
+    "\n",
+    "print(bad)\n",
+    "print(good)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import matplotlib.pyplot as plt\n",
+    "\n",
+    "# Plotting the \"bad\" data\n",
+    "x_bad = [row[0] for row in bad]\n",
+    "y_bad = [row[1] for row in bad]\n",
+    "plt.scatter(x_bad, y_bad, label='bad')\n",
+    "\n",
+    "# Plotting the \"good\" data\n",
+    "x_good = [row[0] for row in good]\n",
+    "y_good = [row[1] for row in good]\n",
+    "plt.scatter(x_good, y_good, label='good')\n",
+    "\n",
+    "# Adding labels and title\n",
+    "plt.xlabel('Distance 1')\n",
+    "plt.ylabel('Distance 2')\n",
+    "plt.title('Data Plot')\n",
+    "\n",
+    "# Adding legend\n",
+    "plt.legend()\n",
+    "\n",
+    "# Displaying the plot\n",
+    "plt.show()\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "language_info": {
+   "name": "python"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
