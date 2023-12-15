@@ -62,3 +62,5 @@ phonedetection/last (1).pt
 admin/node_modules/
 admin/build/
 admin/package-lock.json
+
+raspberry_pi_code/code/assets/
