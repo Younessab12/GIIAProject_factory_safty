@@ -5,8 +5,8 @@ import time
 
 
 class PhoneDetector:
-    def __init__(self,model_path,cam_id=0):
-        self.model = YOLO(model_path)
+    def __init__(self,cam_id=0):
+        self.model = YOLO('../assets/bestnanophone.pt')
         self.cam_id = cam_id
     
 
@@ -30,8 +30,4 @@ class PhoneDetector:
         cap.release()
         cv2.destroyAllWindows()
 
-if __name__ == "__main__":
-    model_path = "C:\\Users\\yassine\\Desktop\\IA project mediapipe\\phone detecte\\last (1).pt"  
-    detector = Detector(model_path)
-    detector.detect()
 
