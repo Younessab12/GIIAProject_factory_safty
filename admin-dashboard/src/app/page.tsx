@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 type RowType = {
   timestamp: string,
   operatorId: string,
+  operatorName: string,
   activityName: string,
   gravity: number,
   raspberryName: string,
@@ -19,6 +20,7 @@ export default function HomePage() {
       const lastJson = await last.json();
       setRows(lastJson.rows);
       setLastRefresh(lastJson.lastRefresh);
+      console.log(lastJson);
     }, 3000);
   }, [])
 
@@ -28,6 +30,22 @@ export default function HomePage() {
       {/* {typeof(lastRefresh) == String ? lastRefresh : lastRefresh.toISOString()} */}
       {lastRefresh}
       <table className="px-6 py-4 whitespace-nowrap text-sm text-yellow mt-5 border-2 rounded-xl bg-gray-100 text-black">
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
+          Time
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
+          Operator Name
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
+          Activity
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
+          Gravity
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
+          Raspberry
+        </td>
+    
         {
           rows.map(
             (row) => { return (<tr>
@@ -35,7 +53,7 @@ export default function HomePage() {
                 {row.timestamp}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm ">
-                {row.operatorId}
+                {row.operator.operatorName}
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {row.activityName}

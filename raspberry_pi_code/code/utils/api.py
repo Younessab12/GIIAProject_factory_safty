@@ -16,12 +16,13 @@ class API:
       timestamp: z.string(),
     """
     timestamp = int(time.time())
+    print(timestamp)
     payload = {
       'apiKey': self.apiKey,
       'operatorName': activity['operatorName'],
       'gravity': activity['gravity'],
       'activityName': activity['activityName'],
-      'timestamp': timestamp
+      'timestamp': timestamp*1000+3600*1000
     }
     url = self.baseUrl + '/api/reportActivity'
     return requests.post(url, json=payload)

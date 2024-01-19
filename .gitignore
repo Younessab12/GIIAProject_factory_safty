@@ -64,3 +64,5 @@ admin/build/
 admin/package-lock.json
 
 raspberry_pi_code/code/assets/
+
+phonedetection/
