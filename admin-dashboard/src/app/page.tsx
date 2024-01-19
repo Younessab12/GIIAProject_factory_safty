@@ -53,8 +53,12 @@ export default function HomePage() {
                 {operator.operatorName}
               </p>
               <p className="px-6 whitespace-nowrap text-sm font-bold">
+                <div className={
+                  operator.status == "Active" ? "bg-green-400 w-3 h-3 rounded-full inline-block mr-2" : (
+                    operator.status == "Inactive" ? "bg-gray-400 w-3 h-3 rounded-full inline-block mr-2" :
+                    "bg-red-400 w-3 h-3 rounded-full inline-block mr-2")
+                }></div>
                 {operator.status}
-                
               </p>
               <p className="px-6 whitespace-nowrap text-sm font-bold">
                 {operator.lastUpdate}

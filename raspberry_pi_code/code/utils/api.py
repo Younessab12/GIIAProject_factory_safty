@@ -12,7 +12,7 @@ class API:
       'apiKey': self.apiKey,
       'operatorName': operatorName
     }
-    url = self.baseUrl + '/api/ping'
+    url = self.baseUrl + '/api/pingOperator'
     return requests.post(url, json=payload)
 
   def reportActivity(self, activity):
