@@ -11,7 +11,6 @@ download_id="1wpmnz09zj1_0ZhgD_swQJrdltZorNVdK"
 
 # build download url
 url="https://drive.google.com/uc?export=download&id=$download_id"
-
 mkdir ../tmp
 
 echo "downloading ..."

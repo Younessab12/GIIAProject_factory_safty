@@ -11,6 +11,9 @@ import face_assessment.face_assessment as FaceAssess
 import illegal_action_detection.illegal_action_detection as IllegalAction
 import utils.api as API
 
+import tools.update_assets as update_assets
+update_assets.update_assets()
+
 api = API.API(baseUrl="http://localhost:3000", apiKey="ABCDE123")
 
 FaceAssessment =  FaceAssess.FaceAssessment()
