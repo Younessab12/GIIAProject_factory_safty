@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
   let operator = await db.operator.findUnique({
     where: { operatorName: activity.operatorName },
   });
-
+  console.log(operator)
   if(!operator) {
     operator = await db.operator.create({
       data: {

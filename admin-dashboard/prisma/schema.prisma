@@ -31,8 +31,8 @@ model Operator {
     image        String?
     phone        String?
     email        String?
-    status       String? @default("inactive")
-    lastUpdated  DateTime?
+    status       String @default("inactive")
+    lastUpdated  DateTime @default(now())
     activities   Activity[]
 }
 

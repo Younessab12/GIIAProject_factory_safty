@@ -32,6 +32,18 @@ cap=cv2.VideoCapture(camId)
 flag=False
 cont=0
 dist=np.inf
+def draw_bounding_box(frame,detection_result):
+    """
+        this fct is used to draw the bounding box of the detected smoking action
+        input: frame: np.array
+                detection_result: list(containing the bounding boxe, label and confidence of the detected action)
+        output: frame: np.array
+    """
+    boxes,confidences,label = list(detection_result[0]),round(float(detection_result[1]),2),detection_result[2]
+    # for box in boxes:
+    cv2.rectangle(frame, (int(boxes[0]), int(boxes[1])), (int(boxes[2]), int(boxes[3])), (0,255,0), 2)
+    cv2.putText(frame,label+' '+str(round(confidences,2)),(int(boxes[0]), int(boxes[1])),cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,0),2)
+    return frame
 with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=0.5) as holistic:
     while cap.isOpened():
         star_time = time.time()
@@ -86,14 +98,17 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
 
         if len(activities) == 0 :
             api.ping(operatorName)
-        
+        if illegal_actions["smocking"] != None:
+            image=draw_bounding_box(image,illegal_actions["smocking"])
+        if illegal_actions["phoneusing"]!=None:
+            image=draw_bounding_box(image,illegal_actions["phoneusing"])
 
         image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
         cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         star_time = time.time()
 
         cv2.imshow('MediaPipe Holistic', image)
-        if cv2.waitKey(10) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
       
 cv2.destroyAllWindows()
