@@ -33,11 +33,13 @@ class SmockingDetector:
                        boxes.conf is the confidence of the model in the detection
                       "smoking" is the label of the detected action
         """
+        left_dist=np.inf
+        right_dist=np.inf
         if right_hand_landmarks and face_landmarks :
             left_dist=self.calculate_distance(right_hand_landmarks.landmark[13],face_landmarks.landmark[13],face_landmarks.landmark[152],face_landmarks.landmark[10])
         if left_hand_landmarks and face_landmarks :
             right_dist=self.calculate_distance(left_hand_landmarks.landmark[13],face_landmarks.landmark[13],face_landmarks.landmark[152],face_landmarks.landmark[10])
-        if left_dist<0.8 or right_dist:
+        if left_dist<0.8 or right_dist<0.8:
             res = self.model(frame,stream=True,show=False)
             for r in res:
                 boxes = r.boxes
@@ -73,29 +75,31 @@ class SmockingDetector:
                 ret,frame=cap.read()
                 res = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
                 image = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-                if res.right_hand_landmarks and res.face_landmarks :
-                    dist=self.calculate_distance(res.right_hand_landmarks.landmark[13],res.face_landmarks.landmark[13],res.face_landmarks.landmark[152],res.face_landmarks.landmark[10])
-                if res.left_hand_landmarks and res.face_landmarks :
-                    dist=self.calculate_distance(res.left_hand_landmarks.landmark[13],res.face_landmarks.landmark[13],res.face_landmarks.landmark[152],res.face_landmarks.landmark[10])
+                # if res.right_hand_landmarks and res.face_landmarks :
+                #     dist=self.calculate_distance(res.right_hand_landmarks.landmark[13],res.face_landmarks.landmark[13],res.face_landmarks.landmark[152],res.face_landmarks.landmark[10])
+                # if res.left_hand_landmarks and res.face_landmarks :
+                #     dist=self.calculate_distance(res.left_hand_landmarks.landmark[13],res.face_landmarks.landmark[13],res.face_landmarks.landmark[152],res.face_landmarks.landmark[10])
                 
-                if dist<0.8:
-                    flag=True
+                # if dist<0.8:
+                #     flag=True
                     
-                if flag and cont<10:
-                    cont+=1
-                    detection_result=self.detect(frame)
-                    if detection_result:
-                        image=self.draw_bounding_box(image,list(detection_result))
-                        print(list(detection_result))
-                    if cont==10:
-                        flag=False
-                        cont=0
-                        dist=np.inf
+                # if flag and cont<10:
+                #     cont+=1
+                #     detection_result=self.detect(frame)
+                #     if detection_result:
+                #         image=self.draw_bounding_box(image,list(detection_result))
+                #         print(list(detection_result))
+                #     if cont==10:
+                #         flag=False
+                #         cont=0
+                #         dist=np.inf
 
-                image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-                cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
-                star_time = time.time()
-
+                # image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
+                # cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                # star_time = time.time()
+                res = self.detect(image,res.right_hand_landmarks,res.left_hand_landmarks,res.face_landmarks)
+                print(res)
+                # image = self.draw_bounding_box(image,res)
                 cv2.imshow('MediaPipe Holistic', image)
                 if cv2.waitKey(10) & 0xFF == ord('q'):
                     break

@@ -11,7 +11,12 @@ import face_assessment.face_assessment as FaceAssess
 import illegal_action_detection.illegal_action_detection as IllegalAction
 import utils.api as API
 
-api = API.API(baseUrl="http://localhost:3000", apiKey="ABCDE123")
+apikey = sys.argv[1]
+camId = int(sys.argv[2])
+print(apikey)
+
+print("connecting to db")
+api = API.API(baseUrl="http://localhost:3000", apiKey=apikey)
 
 FaceAssessment =  FaceAssess.FaceAssessment()
 
@@ -21,8 +26,7 @@ FaceRecognition =  FaceRec.Face_detector()
 
 mp_holistic = mp.solutions.holistic
 mp_drawing = mp.solutions.drawing_utils
-
-cap=cv2.VideoCapture(0)
+cap=cv2.VideoCapture(camId)
 flag=False
 cont=0
 dist=np.inf
@@ -33,17 +37,21 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         res = holistic.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
         image = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
         
+        
         activities = []
 
         # detect person name
         operatorName = "Unknown"
         names, boxes = FaceRecognition.detectface(image)
         if names:
+            print(names)
             operatorName = names[0]
+            print(operatorName)
 
 
         # detect illegal action
-        illegal_actions = IllegalActionDetection.detect(frame, res, objects_to_detect=["phoneusing"])
+        illegal_actions = IllegalActionDetection.detect(frame,res.left_hand_landmarks,res.right_hand_landmarks,res.face_landmarks)
+        print(illegal_actions)
         if illegal_actions:
             if illegal_actions["smocking"] != None:
                 activities.append({
@@ -75,10 +83,10 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
             )
 
         image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
-        # cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+        cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         star_time = time.time()
 
-        # cv2.imshow('MediaPipe Holistic', image)
+        cv2.imshow('MediaPipe Holistic', image)
         if cv2.waitKey(10) & 0xFF == ord('q'):
             break
       

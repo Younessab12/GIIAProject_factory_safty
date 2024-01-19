@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     data: {
       activityName: activity.activityName,
       gravity: activity.gravity,
-      timestamp: activity.timestamp,
+      timestamp: new Date (activity.timestamp),
       operator: {
         connect: {
           id: operator.id,
