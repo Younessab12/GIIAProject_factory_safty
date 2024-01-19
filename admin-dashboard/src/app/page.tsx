@@ -48,22 +48,22 @@ export default function HomePage() {
         <h3 className='flex justify-center items-center pt-2 pb-2'>Operators Live</h3>
         {
           operatorsStatus.map(
-            (operator) => { return (<div className="px-6 py-2 whitespace-nowrap text-sm text-yellow mt-1 border-2 rounded-xl bg-gray-100 text-black">
-              <p className="px-6 first-letter:whitespace-nowrap text-sm font-bold">
-                {operator.operatorName}
-              </p>
-              <p className="px-6 whitespace-nowrap text-sm font-bold">
-                <div className={
-                  operator.status == "active" ? "bg-green-400 w-3 h-3 rounded-full inline-block mr-2" : (
-                    operator.status == "inactive" ? "bg-gray-400 w-3 h-3 rounded-full inline-block mr-2" :
-                    "bg-red-400 w-3 h-3 rounded-full inline-block mr-2")
-                }></div>
-                {operator.status}
-              </p>
-              <p className="px-6 whitespace-nowrap text-sm font-bold">
-                {operator.lastUpdate}
-              </p>
-            </div>)}
+            (operator) => {  return (operator.operatorName.toLocaleUpperCase()==="UNKNOWN"?<div></div>:<div className="px-6 py-2 whitespace-nowrap text-sm text-yellow mt-1 border-2 rounded-xl bg-gray-100 text-black">
+            <p className="px-6 first-letter:whitespace-nowrap text-sm font-bold">
+              {operator.operatorName}
+            </p>
+            <p className="px-6 whitespace-nowrap text-sm font-bold">
+              <div className={
+                operator.status == "active" ? "bg-green-400 w-3 h-3 rounded-full inline-block mr-2" : (
+                  operator.status == "inactive" ? "bg-gray-400 w-3 h-3 rounded-full inline-block mr-2" :
+                  "bg-red-400 w-3 h-3 rounded-full inline-block mr-2")
+              }></div>
+              {operator.status}
+            </p>
+            <p className="px-6 whitespace-nowrap text-sm font-bold">
+              {operator.lastUpdate}
+            </p>
+          </div>  )}
           )
         }
       </div>
@@ -87,7 +87,8 @@ export default function HomePage() {
     
         {
           rows.map(
-            (row) => { return (<tr>
+            (row) => { return (row.operator.operatorName.toUpperCase()==="UNKNOWN"?<div></div>:
+            <tr>
               <td className="px-6 py-4 whitespace-nowrap text-sm ">
                 {row.timestamp}
               </td>
