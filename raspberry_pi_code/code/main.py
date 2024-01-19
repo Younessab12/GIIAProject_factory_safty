@@ -14,11 +14,12 @@ import utils.api as API
 import tools.update_assets as update_assets
 update_assets.update_assets()
 
-apikey = sys.argv[1]
-camId = int(sys.argv[2])
+apikey = os.environ['API_KEY']
+camId = int(os.environ['CAM_ID'])
+apiurl = os.environ['API_URL']
 
 print("connecting to db")
-api = API.API(baseUrl="http://localhost:3000", apiKey=apikey)
+api = API.API(baseUrl=apiurl, apiKey=apikey)
 
 FaceAssessment =  FaceAssess.FaceAssessment()
 

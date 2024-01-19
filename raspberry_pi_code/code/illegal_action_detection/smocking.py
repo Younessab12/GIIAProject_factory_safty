@@ -9,7 +9,7 @@ from ultralytics import YOLO
 class SmockingDetector:
 
     def __init__(self) -> None:
-        self.model = YOLO('../assets/models/bestnano.pt')
+        self.model = YOLO('assets/models/bestnano.pt')
     
     def calculate_distance(self,index_cord,mouth_cord,face_down_cord,face_up_cord):
         """
