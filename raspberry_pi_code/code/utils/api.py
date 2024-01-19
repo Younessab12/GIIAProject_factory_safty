@@ -7,6 +7,14 @@ class API:
     self.baseUrl = baseUrl
     self.apiKey = apiKey
 
+  def ping(self, operatorName):
+    payload = {
+      'apiKey': self.apiKey,
+      'operatorName': operatorName
+    }
+    url = self.baseUrl + '/api/ping'
+    return requests.post(url, json=payload)
+
   def reportActivity(self, activity):
     """
       apiKey: z.string(),

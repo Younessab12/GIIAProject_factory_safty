@@ -4,8 +4,19 @@ import { db } from "~/server/db";
 export async function GET(request: NextRequest) {
   try{
     // get active operators with their status
+
+    await db.operator.updateMany({
+      where: {
+        lastUpdated: {
+          lte: new Date(Date.now() - 60*1000),
+        },
+      },
+      data: {
+        status: "inactive",
+      },
+    });
+
     const operators = await db.operator.findMany({
-      where: { status: "active" },
       select: { operatorName: true, status: true, lastUpdated: true },
     });
 

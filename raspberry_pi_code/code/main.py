@@ -84,6 +84,10 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                 }
             )
 
+        if len(activities) == 0 :
+            api.ping(operatorName)
+        
+
         image=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
         cv2.putText(image, str(round(1/(time.time()-star_time),2)), (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
         star_time = time.time()

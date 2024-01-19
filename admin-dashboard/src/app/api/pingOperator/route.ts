@@ -40,6 +40,14 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  if( operator.status != "active" && operator.status != "inactive" && operator.lastUpdated != null && operator.lastUpdated > new Date(Date.now() - 60*1000)) 
+  {
+    return new NextResponse(
+      JSON.stringify({ name: "Operator is already active" }),
+      { status: 400 }
+    );
+  }
+
   operator = await db.operator.update({
     where: { operatorName: activity.operatorName },
     data: {

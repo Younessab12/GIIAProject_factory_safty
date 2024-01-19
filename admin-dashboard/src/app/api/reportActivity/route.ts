@@ -65,6 +65,15 @@ export async function POST(request: NextRequest) {
       },
     },
   });
+
+  await db.operator.update({
+    where: { operatorName: activity.operatorName },
+    data: {
+      status: "danger",
+      lastUpdated: new Date(),
+    },
+  });
+
   return new NextResponse(JSON.stringify(newActivity));
   } catch (error) {
     return new NextResponse(
